@@ -37,7 +37,9 @@ export class UsersService {
     }
     return {
       id: user.id,
-      name: user.name
+      name: user.name,
+      username: user.name,
+      password: 'password'
     };
   }
 
