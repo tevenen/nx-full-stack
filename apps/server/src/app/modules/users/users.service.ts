@@ -14,32 +14,20 @@ export class UsersService {
   }
 
   async create(createUserDto: Partial<CreateUserDto>) {
-    console.log(createUserDto);
     const user = new this.userModel(createUserDto);
-    console.log({user});
     return await user.save();
   }
 
   async findAll(req: Request) {
-    if(!req.headers['authorization']?.startsWith('Bearer ')) {
-      throw new UnauthorizedException('Invalid token!');
-    }
-    const jwt = req.headers['authorization'].split(' ')[1];
-    try {
-      await this.jwtService.verifyAsync(jwt);
-
-      return (await this.userModel.find()).map(item => {
-        return {
-          id: item.id,
-          name: item.name,
-          email: item.email,
-          password: item.password,
-          username: item.username
-        }
-      });
-    } catch (e) {
-      throw new UnauthorizedException('Invalid token!');
-    }
+    return (await this.userModel.find()).map(item => {
+      return {
+        id: item.id,
+        name: item.name,
+        email: item.email,
+        password: item.password,
+        username: item.username
+      }
+    });
   }
 
   async findOne(username: string): Promise<TUser> {
