@@ -13,7 +13,6 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "myWorkspace",
             "style": "camelCase"
           }
         ],
@@ -21,7 +20,6 @@
           "error",
           {
             "type": "element",
-            "prefix": "my-workspace",
             "style": "kebab-case"
           }
         ]

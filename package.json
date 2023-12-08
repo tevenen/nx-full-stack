@@ -2,7 +2,10 @@
   "name": "@my-workspace/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "server": "nx serve server",
+    "client": "nx serve client"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~17.0.0",
