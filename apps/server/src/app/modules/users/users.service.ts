@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -18,7 +18,7 @@ export class UsersService {
     return await user.save();
   }
 
-  async findAll(req: Request) {
+  async findAll() {
     return (await this.userModel.find()).map(item => {
       return {
         id: item.id,
@@ -50,7 +50,7 @@ export class UsersService {
     };
   }
 
-  async findById(id: string): Promise<TUser> {
+  async findById(id: string): Promise<Partial<TUser>> {
     let user: TUser;
     try {
       user = await this.userModel.findById(id);
@@ -65,9 +65,13 @@ export class UsersService {
       id: user.id,
       email: user.email,
       name: user.name,
-      username: user.name,
-      password: user.password
+      username: user.name
     };
+  }
+
+  async currentUser(jwt: string): Promise<Partial<TUser>> {
+    const decoded = await this.jwtService.decode(jwt);
+    return this.findById(decoded.id);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

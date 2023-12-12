@@ -23,8 +23,14 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard)
-  findAll(@Req() request: Request) {
-    return this.usersService.findAll(request);
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @Get('current')
+  findCurrent(@Req() request: Request) {
+    const jwt = request.headers['authorization']?.split(' ')[1];
+    return this.usersService.currentUser(jwt);
   }
 
   @Get(':id')

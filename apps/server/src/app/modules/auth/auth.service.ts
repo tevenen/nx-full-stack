@@ -23,13 +23,14 @@ export class AuthService {
 
   async login(username: string, password: string) {
     let user: TUser;
+    const loginFailedMessage: string = 'login.failed';
     try {
       user = await this.usersService.findOne(username);
     } catch(e) {
-      throw new BadRequestException('User does not exist!');
+      throw new BadRequestException(loginFailedMessage);
     }
     if(!(await bcrypt.compare(password, user.password))) {
-      throw new BadRequestException('Bad credentials!');
+      throw new BadRequestException(loginFailedMessage);
     }
     const jwt = await this.jwtService.signAsync({
       id: user.id,
