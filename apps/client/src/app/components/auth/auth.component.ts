@@ -10,26 +10,28 @@ import { AuthService } from './services/auth.service';
 import { AppStore } from '../../core/store/app.store';
 import { LoginComponent } from './components/login/login.component';
 import { switchMap, tap } from 'rxjs';
-import { TUser } from '@libs/models';
+import { RegisterRequest, TUser } from '@libs/models';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RegisterComponent } from './components/register/register.component';
+import { register } from '@swc-node/register/register';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatTabsModule, ReactiveFormsModule, LoginComponent],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatTabsModule, ReactiveFormsModule, LoginComponent, RegisterComponent],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent {
 
-  loginService = inject(AuthService);
+  authService = inject(AuthService);
   store = inject(AppStore);
 
   errorMessage: string = '';
 
   login(value: {username: string; password: string}) {
-      this.loginService.login(value).pipe(
+      this.authService.login(value).pipe(
         tap(data => localStorage.setItem('token', data.access_token)),
-        switchMap(() => this.loginService.getUser())
+        switchMap(() => this.authService.getUser())
       ).subscribe((user: TUser) => {
         this.store.updateUser(user);
       }, (error: HttpErrorResponse) => {
@@ -37,5 +39,9 @@ export class AuthComponent {
         this.errorMessage = error.error.message;
       });
 
+  }
+
+  register(value: RegisterRequest) {
+    this.authService.register(value).subscribe(console.log);
   }
 }

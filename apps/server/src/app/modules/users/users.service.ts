@@ -86,4 +86,22 @@ export class UsersService {
       throw new HttpException('Could not delete user!', HttpStatus.NOT_FOUND);
     }
   }
+
+  async checkUsername(username: string) {
+    try {
+      const users = await this.userModel.find({username});
+      return users.length === 0;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async checkEmail(email: string) {
+    try {
+      const users = await this.userModel.find({email});
+      return users.length === 0;
+    } catch (e) {
+      return false;
+    }
+  }
 }

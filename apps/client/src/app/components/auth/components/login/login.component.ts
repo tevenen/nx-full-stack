@@ -27,7 +27,7 @@ export class LoginComponent {
     username: new FormControl<string>('milan1@gmail.com', Validators.compose([Validators.required, Validators.min(3)])),
     password: new FormControl<string>('password', Validators.compose([Validators.required]))
   });
-  showPassword: boolean = true;
+  hidePassword: boolean = true;
 
   submit() {
     if(this.loginForm.valid) {

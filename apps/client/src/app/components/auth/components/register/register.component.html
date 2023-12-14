@@ -1,0 +1,65 @@
+<mat-card [formGroup]="registerForm" class="register-form">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email"/>
+    @if(emailControl?.hasError('required')) {
+      <mat-error>Email is required!</mat-error>
+    } @else if(emailControl?.hasError('email')) {
+      <mat-error>Invalid email format!</mat-error>
+    }
+    @if(emailControl?.pending) {
+      <mat-progress-spinner matSuffix [mode]="'indeterminate'" [diameter]="20" class="validator-spinner"></mat-progress-spinner>
+    } @else {
+      @if(emailControl?.hasError('emailNotAvailable')) {
+        <mat-icon matSuffix color="warn">error</mat-icon>
+      } @else if(emailControl?.touched && !emailControl?.hasError('required')) {
+        <mat-icon matSuffix style="color: green">check</mat-icon>
+      }
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="username"/>
+    @if(usernameControl?.hasError('required')) {
+      <mat-error>Username is required!</mat-error>
+    }
+    @if(usernameControl?.pending) {
+      <mat-progress-spinner matSuffix [mode]="'indeterminate'" [diameter]="20" class="validator-spinner"></mat-progress-spinner>
+    } @else {
+      @if(usernameControl?.hasError('usernameNotAvailable')) {
+        <mat-icon matSuffix color="warn">error</mat-icon>
+      } @else if(usernameControl?.touched && !usernameControl?.hasError('required')) {
+        <mat-icon matSuffix style="color: green">check</mat-icon>
+      }
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name"/>
+    @if(registerForm.get('name')?.hasError('required')) {
+      <mat-error>Password is required!</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'"/>
+    @if(registerForm.get('password')?.hasError('required')) {
+      <mat-error>Password is required!</mat-error>
+    }
+    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Repeat Password</mat-label>
+    <input matInput formControlName="repeatPassword" [type]="hideRepeatPassword ? 'password' : 'text'"/>
+    @if(registerForm.get('repeatPassword')?.hasError('required')) {
+      <mat-error>Repeat Password is required!</mat-error>
+    }
+    <button mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword" [attr.aria-label]="'Hide repeat password'" [attr.aria-pressed]="hideRepeatPassword">
+      <mat-icon>{{hideRepeatPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" (click)="submit()">Register</button>
+</mat-card>

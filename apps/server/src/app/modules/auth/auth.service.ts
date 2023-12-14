@@ -17,8 +17,7 @@ export class AuthService {
       ...user,
       password: hashedPassword
     };
-    const createdUser = await this.usersService.create(userPayload);
-    return createdUser;
+    return await this.usersService.create(userPayload);
   }
 
   async login(username: string, password: string) {
